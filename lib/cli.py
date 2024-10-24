@@ -1,22 +1,26 @@
 # lib/cli.py
+
+import click
 from models import initialize_db
+from models.genre import Genre
+from models.book import Book
+from helpers import validate_genre_id, validate_book_id, format_genre_output, format_book_output
 
-from helpers import (
-    exit_program,
-    helper_1
-)
+@click.group()
+def cli():
+    """Book Collection Manager CLI."""
+    pass
 
+# Add Genre
+@click.command()
+@click.option('--name', prompt='Genre name', help='The name of the genre.')
+def add_genre(name):
+    """Add a new genre."""
+    try:
+        Genre.add_genre(name)
+    except Exception as e:
+        click.echo(f"Error: {str(e)}")
 
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
 
 
 def menu():
