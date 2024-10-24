@@ -4,13 +4,12 @@ import click
 from models import initialize_db
 from models.genre import Genre
 from models.book import Book
-from helpers import validate_genre_id, validate_book_id, format_genre_output, format_book_output
+from helpers import format_genre_output, format_book_output
 
 # Add @click.pass_context to pass the context (ctx) to the cli function
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx):
-    """Book Collection Manager CLI."""
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
 
@@ -20,7 +19,8 @@ def cli(ctx):
 def add_genre(name):
     """Add a new genre."""
     try:
-        Genre.add_genre(name)
+        genre = Genre.create(name)
+        click.echo(f"Genre '{genre.name}' added successfully with ID {genre.id}.")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 
