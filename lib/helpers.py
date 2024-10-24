@@ -24,9 +24,12 @@ def validate_book_id(book_id):
     else:
         raise ValueError(f"No book found with ID {book_id}.")
 
+def format_genre_output(genre):
+    return f"{genre[0]}: {genre[1]}"
 
-def helper_1():
-    print("Performing useful function#1.")
+def format_book_output(book):
+    return f"{book[0]}: {book[1]} by {book[2]} (Genre ID: {book[3]})"
+
 
 
 def exit_program():
