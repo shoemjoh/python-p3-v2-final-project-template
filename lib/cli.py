@@ -1,4 +1,5 @@
 # lib/cli.py
+from models import initialize_db
 
 from helpers import (
     exit_program,
@@ -25,4 +26,5 @@ def menu():
 
 
 if __name__ == "__main__":
+    initialize_db()
     main()

@@ -22,3 +22,5 @@ def initialize_db():
         FOREIGN KEY (genre_id) REFERENCES genres(id)
         )
     ''')
+
+CONN.commit()
