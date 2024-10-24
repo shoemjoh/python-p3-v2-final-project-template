@@ -7,7 +7,6 @@ from helpers import format_genre_output, format_book_output
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx):
-    """Book Collection Manager CLI."""
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
 
@@ -17,7 +16,7 @@ def cli(ctx):
 def add_genre(name):
     """Add a new genre."""
     try:
-        genre = Genre.create(name)
+        genre = Genre.add_genre(name)
         click.echo(f"Genre '{genre.name}' added successfully with ID {genre.id}.")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
@@ -32,7 +31,7 @@ def add_book(title, author, genre_name):
     genre = Genre.find_by_name(genre_name)
     if genre:
         try:
-            book = Book.create(title, author, genre.id)
+            book = Book.add_book(title, author, genre.id)
             click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre.name}'.")
         except Exception as e:
             click.echo(f"Error: {str(e)}")
@@ -71,7 +70,6 @@ def show_books(genre_name):
 @click.command()
 @click.option('--genre_name', prompt='Genre name', help='The name of the genre to delete.')
 def delete_genre(genre_name):
-    """Delete a genre by its name."""
     genre = Genre.find_by_name(genre_name)
     if genre:
         genre.delete()
