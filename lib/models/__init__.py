@@ -13,4 +13,12 @@ def initialize_db():
         )
     ''')
 
-    CONN.commit()
+    CURSOR.execute('''
+        CREATE TABLE IF NOT EXISTS books (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        author TEXT NOT NULL,
+        genre_id INTEGER, 
+        FOREIGN KEY (genre_id) REFERENCES genres(id)
+        )
+    ''')
