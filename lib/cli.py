@@ -11,7 +11,7 @@ def cli():
     """Book Collection Manager CLI."""
     pass
 
-# Add Genre
+#add genre
 @click.command()
 @click.option('--name', prompt='Genre name', help='The name of the genre.')
 def add_genre(name):
@@ -20,6 +20,23 @@ def add_genre(name):
         Genre.add_genre(name)
     except Exception as e:
         click.echo(f"Error: {str(e)}")
+
+#add book
+@click.command()
+@click.option('--title', prompt='Book title', help='The title of the book.')
+@click.option('--author', prompt='Book author', help='The author of the book.')
+@click.option('--genre_id', prompt='Genre Name', help='The ID of the genre for this book.')
+def add_book(title, author, genre_name):
+    genre = Genre.find_by_name(genre_name)
+    if genre:
+        genre_id = genre[0]
+        try:
+            Book.add_book(title, author, genre_id)
+            click.echo(f"Book '{title}' by {author} added to genre '{genre_name}'.")
+        except Exception as e:
+            click.echo(f"Error: {str(e)}")
+    else:
+        click.echo(f"Error: Genre '{genre_name}' not found. Please add the genre first.")
 
 
 
