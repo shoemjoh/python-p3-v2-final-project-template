@@ -2,21 +2,31 @@ import sqlite3
 from models import CONN, CURSOR
 
 class Genre:
+
+    _genres = {}
+
     def __init__(self, name):
         self.name = name
+        self.id = None
+        Genre._genres[self.name] = self
 
     #add new genre to database
     @classmethod
     def add_genre(cls, name):
+        if name in cls._genres:
+            print(f"Error: Genre '{name}' already exists.")
+            return
+        genre = cls(name)
         sql = """
             INSERT INTO genres (name) VALUES (?)
         """
         try:
             CURSOR.execute(sql, (name,))
             CONN.commit()
+            genre.id = CURSOR.lastrowid
             print(f"Genre '{name}' added successfully!")
         except sqlite3.IntegreityError:
-            print(f"Error: Genre '{name}' already exists.")
+            print(f"Error: Genre '{name}' already exists in database.")
     
     #get all genres
     @classmethod
@@ -36,6 +46,7 @@ class Genre:
         """
         CURSOR.execute(sql, (genre_id,))
         CONN.commit()
+        cls._genres = [g for g in cls._genres if g.id != genre_id]
         print(f"GENRE ID {genre_id} deleted.")
 
     #find a genre by name
