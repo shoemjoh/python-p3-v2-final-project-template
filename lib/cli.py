@@ -60,3 +60,9 @@ def show_books(genre_name):
             if books:
                 for book in books:
                     click.echo(format_book_output(book))
+            else:
+                click.echo(f"No books found for genre '{genre_name}'.")
+        else:
+            click.echo(f"Genre '{genre_name}' not found.")
+    except Exception as e:
+        click.echo(f"Error: {str(e)}")
