@@ -1,5 +1,5 @@
 import sqlite3
-from __init__  import CONN, CURSOR
+from models import CONN, CURSOR
 
 class Genre:
     def __init__(self, name):

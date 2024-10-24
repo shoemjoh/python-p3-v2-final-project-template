@@ -9,7 +9,8 @@ from helpers import validate_genre_id, validate_book_id, format_genre_output, fo
 @click.group()
 def cli():
     """Book Collection Manager CLI."""
-    pass
+    if ctx.invoked_subcommand is None:
+        click.echo(ctx.get_help())
 
 #add genre
 @click.command()
@@ -81,3 +82,13 @@ def delete_genre(genre_name):
             click.echo(f"Genre '{genre_name}' not found.")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
+
+cli.add_command(add_genre)
+cli.add_command(add_book)
+cli.add_command(show_genres)
+cli.add_command(show_books)
+cli.add_command(delete_genre)
+
+if __name__ == "__main__":
+    initialize_db()
+    cli()

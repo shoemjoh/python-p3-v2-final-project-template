@@ -1,5 +1,5 @@
 import sqlite3
-from __init__  import CONN, CURSOR
+from models import CONN, CURSOR
 
 class Book:
     def __init__(self, title, author, genre_id):
