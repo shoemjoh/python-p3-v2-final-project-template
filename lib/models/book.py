@@ -8,7 +8,7 @@ class Book:
         self.genre_id = genre_id
 
     @property
-    def name(self):
+    def title(self):
         return self._title
 
     @title.setter
@@ -37,7 +37,6 @@ class Book:
             book = cls(title, author, genre_id)
             CURSOR.execute(sql, (title, author, genre_id))
             CONN.commit()
-            print(f"Book '{title}' by {author} added to genre ID {genre_id}")
         except sqlite3.IntegrityError as e:
             print(f"Error: {str(e)}")
 

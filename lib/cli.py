@@ -6,13 +6,15 @@ from models.genre import Genre
 from models.book import Book
 from helpers import validate_genre_id, validate_book_id, format_genre_output, format_book_output
 
-@click.group()
-def cli():
+# Add @click.pass_context to pass the context (ctx) to the cli function
+@click.group(invoke_without_command=True)
+@click.pass_context
+def cli(ctx):
     """Book Collection Manager CLI."""
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
 
-#add genre
+# add genre
 @click.command()
 @click.option('--name', prompt='Genre name', help='The name of the genre.')
 def add_genre(name):
@@ -22,11 +24,11 @@ def add_genre(name):
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 
-#add book
+# add book
 @click.command()
 @click.option('--title', prompt='Book title', help='The title of the book.')
 @click.option('--author', prompt='Book author', help='The author of the book.')
-@click.option('--genre_id', prompt='Genre Name', help='The ID of the genre for this book.')
+@click.option('--genre_name', prompt='Genre name', help='The name of the genre for this book.')  # Changed prompt label to genre_name
 def add_book(title, author, genre_name):
     genre = Genre.find_by_name(genre_name)
     if genre:
@@ -39,7 +41,7 @@ def add_book(title, author, genre_name):
     else:
         click.echo(f"Error: Genre '{genre_name}' not found. Please add the genre first.")
 
-#show available genres
+# show available genres
 @click.command()
 def show_genres():
     genres = Genre.get_all_genres()
@@ -49,7 +51,7 @@ def show_genres():
     else:
         click.echo("No genres have been added.")
 
-#show books
+# show books by genre
 @click.command()
 @click.option('--genre_name', prompt='Genre name', help='The name of the genre to show books from.')
 def show_books(genre_name):
@@ -68,7 +70,7 @@ def show_books(genre_name):
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 
-#delete genre
+# delete genre
 @click.command()
 @click.option('--genre_name', prompt='Genre name', help='The name of the genre to delete.')
 def delete_genre(genre_name):
@@ -83,6 +85,7 @@ def delete_genre(genre_name):
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 
+# Register the commands
 cli.add_command(add_genre)
 cli.add_command(add_book)
 cli.add_command(show_genres)
