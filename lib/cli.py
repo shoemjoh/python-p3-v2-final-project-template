@@ -66,3 +66,18 @@ def show_books(genre_name):
             click.echo(f"Genre '{genre_name}' not found.")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
+
+#delete genre
+@click.command()
+@click.option('--genre_name', prompt='Genre name', help='The name of the genre to delete.')
+def delete_genre(genre_name):
+    try:
+        genre = Genre.find_by_name(genre_name)
+        if genre:
+            genre_id = genre[0]
+            Genre.delete_genre(genre_id)
+            click.echo(f"Genre '{genre_name}' deleted.")
+        else:
+            click.echo(f"Genre '{genre_name}' not found.")
+    except Exception as e:
+        click.echo(f"Error: {str(e)}")
