@@ -19,7 +19,7 @@ def initialize_db():
         title TEXT NOT NULL,
         author TEXT NOT NULL,
         genre_id INTEGER, 
-        FOREIGN KEY (genre_id) REFERENCES genres(id)
+        FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE SET NULL
         )
     ''')
 
