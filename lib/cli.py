@@ -40,11 +40,3 @@ def add_book(title, author, genre_name):
 
 
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
-
-
-if __name__ == "__main__":
-    main()
