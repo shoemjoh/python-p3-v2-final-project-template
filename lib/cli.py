@@ -48,3 +48,15 @@ def show_genres():
     else:
         click.echo("No genres have been added.")
 
+#show books
+@click.command()
+@click.option('--genre_name', prompt='Genre name', help='The name of the genre to show books from.')
+def show_books(genre_name):
+    try:
+        genre = Genre.find_by_name(genre_name)
+        if genre:
+            genre_id = genre[0]
+            books = Book.get_books_by_genre(genre_id)
+            if books:
+                for book in books:
+                    click.echo(format_book_output(book))
