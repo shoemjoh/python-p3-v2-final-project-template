@@ -1,7 +1,7 @@
 import sqlite3
 from __init__  import CONN, CURSOR
 
-class BOOK:
+class Book:
     def __init__(self, title, author, genre_id):
         self.title = title
         self.author = author
@@ -26,3 +26,21 @@ class BOOK:
         CURSOR.execute(sql, (genre_id,))
         books = CURSOR.fetchall()
         return books
+    
+    @classmethod
+    def delete_books(cls, book_id):
+        sql = """
+        DELETE FROM books WHERE book_id = ?
+        """
+        CURSOR.execute(sql, (book_id,))
+        CONN.commit()
+        print(f"Book ID {book_id} deleted.")
+
+    @classmethod
+    def find_by_title(cls, title):
+        sql = """
+        SELECT * FROM books WHERE title = ?
+        """
+        CURSOR.execute(sql, (title,))
+        book = CURSOR.fetchone()
+        return book
