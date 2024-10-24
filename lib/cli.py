@@ -38,5 +38,13 @@ def add_book(title, author, genre_name):
     else:
         click.echo(f"Error: Genre '{genre_name}' not found. Please add the genre first.")
 
-
+#show available genres
+@click.command()
+def show_genres():
+    genres = Genre.get_all_genres()
+    if genres:
+        for genre in genres:
+            click.echo(format_genre_output(genre))
+    else:
+        click.echo("No genres have been added.")
 
