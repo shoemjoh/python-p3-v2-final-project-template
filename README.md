@@ -38,6 +38,10 @@ Prerequisites:
 
 Steps:
 Clone the repository**:
-   ```bash
+   bash
    git clone <repository-url>
    cd <repository-folder>
+   pipenv install
+    pipenv shell
+    python lib/cli.py
+

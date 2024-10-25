@@ -70,6 +70,13 @@ def delete_genre():
     else:
         click.echo(f"Genre '{genre_name}' not found.")
 
+def delete_book():
+    title = input("Book title to delete: ")
+    try:
+        Book.delete_by_title(title)
+    except Exception as e:
+        click.echo(f"Error: {str(e)}")
+
 def show_menu():
     click.echo("\nMain Menu:")
     click.echo("1. Add Genre")
@@ -77,6 +84,7 @@ def show_menu():
     click.echo("3. Show All Genres")
     click.echo("4. Show Books by Genre")
     click.echo("5. Delete Genre")
+    click.echo("6. Delete Book") 
     click.echo("0. Exit\n")
 
 def handle_choice(choice):
@@ -92,6 +100,8 @@ def handle_choice(choice):
             show_books()
         elif choice == '5':
             delete_genre()
+        elif choice == '6':
+            delete_book()
         elif choice == '0':
             exit_program()
         else:

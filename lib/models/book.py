@@ -83,6 +83,21 @@ class Book:
         sql = "SELECT * FROM books WHERE title = ?"
         row = CURSOR.execute(sql, (title,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def delete_by_title(cls, title):
+        """Delete a book by its title."""
+        sql = "DELETE FROM books WHERE title = ?"
+        CURSOR.execute(sql, (title,))
+        CONN.commit()
+        
+        # Also remove from in-memory dictionary
+        book = cls.find_by_title(title)
+        if book:
+            del cls.all[book.id]
+            print(f"Book '{title}' has been deleted.")
+        else:
+            print(f"Book '{title}' not found.")
 
     def delete(self):
         sql = "DELETE FROM books WHERE id = ?"
