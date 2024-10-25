@@ -2,21 +2,18 @@ import click
 from models import initialize_db
 from models.genre import Genre
 from models.book import Book
-from helpers import format_genre_output, format_book_output
+from helpers import format_genre_output, format_book_output, exit_program
 
-@click.group(invoke_without_command=True)
-@click.pass_context
-def cli(ctx):
-    if ctx.invoked_subcommand is None:
-        click.echo(ctx.get_help())
+@click.group()
+def cli():
+    pass
 
 # Add genre
 @click.command()
 @click.option('--name', prompt='Genre name', help='The name of the genre.')
 def add_genre(name):
-    """Add a new genre."""
     try:
-        genre = Genre.add_genre(name)
+        genre = Genre.create(name)
         click.echo(f"Genre '{genre.name}' added successfully with ID {genre.id}.")
     except Exception as e:
         click.echo(f"Error: {str(e)}")
@@ -27,12 +24,11 @@ def add_genre(name):
 @click.option('--author', prompt='Book author', help='The author of the book.')
 @click.option('--genre_name', prompt='Genre name', help='The name of the genre for this book.')
 def add_book(title, author, genre_name):
-    """Add a new book."""
     genre = Genre.find_by_name(genre_name)
     if genre:
         try:
-            book = Book.add_book(title, author, genre.id)
-            click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre.name}'.")
+            book = Book.create(title, author, genre.name)
+            click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre_name}'.")
         except Exception as e:
             click.echo(f"Error: {str(e)}")
     else:
@@ -41,7 +37,6 @@ def add_book(title, author, genre_name):
 # Show all genres
 @click.command()
 def show_genres():
-    """Show all genres."""
     genres = Genre.get_all()
     if genres:
         for genre in genres:
@@ -53,7 +48,6 @@ def show_genres():
 @click.command()
 @click.option('--genre_name', prompt='Genre name', help='The name of the genre to show books from.')
 def show_books(genre_name):
-    """Show all books for a specific genre."""
     genre = Genre.find_by_name(genre_name)
     if genre:
         books = Book.get_all()
@@ -94,6 +88,7 @@ def show_menu():
     click.echo("0. Exit\n")
 
 def handle_choice(choice):
+    """Handle the user's menu choice."""
     if choice == '1':
         cli.invoke(add_genre)
     elif choice == '2':
@@ -115,7 +110,6 @@ def main_loop():
         choice = input("Select an option: ")
         handle_choice(choice)
 
-
 if __name__ == "__main__":
     initialize_db()
-    cli()
+    main_loop()
