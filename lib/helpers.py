@@ -2,7 +2,6 @@ from models.genre import Genre
 from models.book import Book
 
 def validate_genre_id(genre_id):
-    """Validate that a genre with the given ID exists."""
     genre = Genre.find_by_id(genre_id)
     if genre:
         return genre
@@ -10,7 +9,6 @@ def validate_genre_id(genre_id):
         raise ValueError(f"No genre found with ID {genre_id}.")
 
 def validate_book_id(book_id):
-    """Validate that a book with the given ID exists."""
     book = Book.find_by_id(book_id)
     if book:
         return book
@@ -18,21 +16,17 @@ def validate_book_id(book_id):
         raise ValueError(f"No book found with ID {book_id}.")
 
 def format_genre_output(genre):
-    """Format genre output for display."""
     return f"{genre.name}"
 
 def format_book_output(book):
-    """Format book output for display."""
     genre_name = Genre.find_by_id(book.genre_id).name  
     return f"'{book.title}' by {book.author} (Genre: {genre_name})"
 
 def exit_program():
-    """Exit the program."""
     print("Goodbye!")
     exit()
 
 def list_genres():
-    """Return a list of all available genres as a numbered list."""
     genres = Genre.get_all()
     if not genres:
         return "No genres available."
@@ -43,7 +37,6 @@ def list_genres():
     return output
 
 def list_books_by_genre(genre_name):
-    """Return a list of all books in a given genre."""
     genre = Genre.find_by_name(genre_name)
     if not genre:
         return f"Genre '{genre_name}' not found."
