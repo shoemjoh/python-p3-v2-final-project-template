@@ -3,7 +3,7 @@ Library Manager CLI
 Overview
 The Library Manager CLI is a Python-based command-line application that allows users to manage a collection of books and their associated genres. The project utilizes SQLite for persistent data storage, ensuring that books and genres are retained between sessions. Users can add new genres, associate books with those genres, and retrieve or delete entries as needed.
 
-This project demonstrates Object-Relational Mapping (ORM) in Python without relying on an external library like SQLAlchemy. Instead, direct SQL queries are used to interact with the SQLite database.
+This project demonstrates Object-Relational Mapping (ORM) in Python.
 
 Features
 - Add genres: Create new book genres (e.g., "Science Fiction", "Fantasy").
@@ -21,7 +21,7 @@ Models
   - genre.py: Defines the `Genre` class, which includes methods for creating, retrieving, and deleting genres.
   - book.py: Defines the `Book` class, which manages the book entries and their relationships to genres.
   
-- helpers.py: Contains utility functions to validate inputs (e.g., checking if a genre exists), as well as functions to format the output for display in the CLI.
+- helpers.py: Contains utility functions to validate inputs.
 
 Data Models
 The project has two main data models:
