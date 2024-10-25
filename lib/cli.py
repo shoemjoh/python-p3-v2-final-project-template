@@ -84,6 +84,38 @@ cli.add_command(show_genres)
 cli.add_command(show_books)
 cli.add_command(delete_genre)
 
+def show_menu():
+    click.echo("\nMain Menu:")
+    click.echo("1. Add Genre")
+    click.echo("2. Add Book")
+    click.echo("3. Show All Genres")
+    click.echo("4. Show Books by Genre")
+    click.echo("5. Delete Genre")
+    click.echo("0. Exit\n")
+
+def handle_choice(choice):
+    if choice == '1':
+        cli.invoke(add_genre)
+    elif choice == '2':
+        cli.invoke(add_book)
+    elif choice == '3':
+        cli.invoke(show_genres)
+    elif choice == '4':
+        cli.invoke(show_books)
+    elif choice == '5':
+        cli.invoke(delete_genre)
+    elif choice == '0':
+        exit_program()
+    else:
+        click.echo("Invalid choice. Please select a valid option.")
+
+def main_loop():
+    while True:
+        show_menu()
+        choice = input("Select an option: ")
+        handle_choice(choice)
+
+
 if __name__ == "__main__":
     initialize_db()
     cli()
