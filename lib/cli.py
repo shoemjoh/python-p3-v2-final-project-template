@@ -21,7 +21,22 @@ def add_book():
     title = input("Book title: ")
     author = input("Book author: ")
     genre_name = input("Genre name: ")
-        
+
+    # would be nicer if I could just pick a genre, rather than remember the whole genre name
+    # this is duplicative to what we're already doing in the Book model, you keep going back to genre_name which is not efficient at all.
+    # once I have the genre object, double check everywhere you call Genre.find_by_name
+    # in the next phase, react frontend will replace the CLI and helpers. It should do minimal fetching.
+    # frontend needs to be smart about when it needs to ask for information from the backend
+    # fix this duplicative code, and add the .books
+    # you'll use an ORM in phase 4 that does this for you!
+    # would have printed out the existing genres to pick from
+
+    # fundamentals of python, list comprehensions, decorators
+    # object orientation: do you understand what an object is, self, class method and instance methods
+    # don't call a class an instance or an instance a class
+    # request response flow, cli and helpers are the view
+    # genres = Genre.get_all()
+
     genre = Genre.find_by_name(genre_name)
     if genre:
         try:
@@ -45,12 +60,15 @@ def show_genres():
 
 # Show books by genre
 def show_books():
+
+    # want to just be able to call genres.books() to show the books associated with the genres. Instance method in the genre model.
     genre_name = input("Genre name: ")
         
     genre = Genre.find_by_name(genre_name)
     if genre:
-        books = Book.get_all()
-        filtered_books = [book for book in books if book.genre_id == genre.id]
+        # books = Book.get_all()
+        # filtered_books = [book for book in books if book.genre_id == genre.id]
+        filtered_books = genre.books()
         if filtered_books:
             for book in filtered_books:
                 click.echo(format_book_output(book))

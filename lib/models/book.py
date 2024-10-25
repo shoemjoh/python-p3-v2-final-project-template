@@ -4,15 +4,19 @@ from models.genre import Genre
 class Book:
     all = {}
 
-    def __init__(self, title, author, genre_name, id=None):
+    def __init__(self, title, author, genre_name=None, id=None):
         self.id = id
         self.title = title
         self.author = author
-        genre = Genre.find_by_name(genre_name)
-        if genre:
-            self.genre_id = genre.id
+        
+        if genre_name:
+            genre = Genre.find_by_name(genre_name)
+            if genre:
+                self.genre_id = genre.id
+            else:
+                raise ValueError(f"Genre '{genre_name}' not found. Please add the genre first.")
         else:
-            raise ValueError(f"Genre '{genre_name}' not found. Please add the genre first.")
+            self.genre_id = None 
 
     def __repr__(self):
         return f"<Book {self.id}: {self.title}, {self.author}, Genre ID: {self.genre_id}>"
@@ -61,16 +65,25 @@ class Book:
     @classmethod
     def instance_from_db(cls, row):
         """Create or retrieve a book instance from the database."""
-        book = cls.all.get(row[0])
-        if book:
-            book.title = row[1]
-            book.author = row[2]
-            book.genre_id = row[3]
-        else:
-            genre_name = Genre.find_by_id(row[3]).name  
-            book = cls(row[1], row[2], genre_name, id=row[0])
-            cls.all[book.id] = book
-        return book
+        if row:
+            book = cls.all.get(row[0])
+            if book:
+                book.title = row[1]
+                book.author = row[2]
+                book.genre_id = row[3]
+            else:
+                genre = Genre.find_by_id(row[3])
+                if genre:
+                    genre_name = genre.name
+                else:
+                    genre_name = None  # Allow the genre to be missing
+                    print(f"Warning: Genre with ID {row[3]} not found.")
+                
+                # Create the book object even if genre is missing
+                book = cls(row[1], row[2], genre_name, id=row[0])
+                cls.all[book.id] = book
+            return book
+        return None
 
     @classmethod
     def find_by_id(cls, id):
@@ -80,21 +93,24 @@ class Book:
 
     @classmethod
     def find_by_title(cls, title):
+        """Find a book by its title."""
         sql = "SELECT * FROM books WHERE title = ?"
         row = CURSOR.execute(sql, (title,)).fetchone()
         return cls.instance_from_db(row) if row else None
-    
+   
     @classmethod
     def delete_by_title(cls, title):
         """Delete a book by its title."""
-        sql = "DELETE FROM books WHERE title = ?"
-        CURSOR.execute(sql, (title,))
-        CONN.commit()
-        
-        # Also remove from in-memory dictionary
         book = cls.find_by_title(title)
+        
         if book:
-            del cls.all[book.id]
+            sql = "DELETE FROM books WHERE title = ?"
+            CURSOR.execute(sql, (title,))
+            CONN.commit()
+
+            if book.id in cls.all:
+                del cls.all[book.id]
+
             print(f"Book '{title}' has been deleted.")
         else:
             print(f"Book '{title}' not found.")
