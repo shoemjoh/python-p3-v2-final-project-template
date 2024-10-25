@@ -19,12 +19,12 @@ def validate_book_id(book_id):
 
 def format_genre_output(genre):
     """Format genre output for display."""
-    return f"ID {genre.id}: {genre.name}"
+    return f"{genre.name}"
 
 def format_book_output(book):
     """Format book output for display."""
     genre_name = Genre.find_by_id(book.genre_id).name  
-    return f"ID {book.id}: '{book.title}' by {book.author} (Genre: {genre_name})"
+    return f"'{book.title}' by {book.author} (Genre: {genre_name})"
 
 def exit_program():
     """Exit the program."""
