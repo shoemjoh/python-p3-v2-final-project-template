@@ -35,7 +35,7 @@ class Genre:
         type(self).all[self.id] = self
 
     @classmethod
-    def add_genre(cls, name):
+    def create(cls, name):
         genre = cls(name)
         genre.save()
         return genre

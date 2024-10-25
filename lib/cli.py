@@ -27,7 +27,7 @@ def add_book(title, author, genre_name):
     genre = Genre.find_by_name(genre_name)
     if genre:
         try:
-            book = Book.create(title, author, genre.name)
+            book = Book.create(title, author, genre_name)
             click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre_name}'.")
         except Exception as e:
             click.echo(f"Error: {str(e)}")
@@ -90,20 +90,20 @@ def show_menu():
 def handle_choice(choice):
     """Handle the user's menu choice."""
     if choice == '1':
-        cli.invoke(add_genre)
+        cli(['add-genre'])
     elif choice == '2':
-        cli.invoke(add_book)
+        cli(['add-book'])
     elif choice == '3':
-        cli.invoke(show_genres)
+        cli(['show-genres'])
     elif choice == '4':
-        cli.invoke(show_books)
+        cli(['show-books'])
     elif choice == '5':
-        cli.invoke(delete_genre)
+        cli(['delete-genre'])
     elif choice == '0':
         exit_program()
     else:
         click.echo("Invalid choice. Please select a valid option.")
-
+        
 def main_loop():
     while True:
         show_menu()

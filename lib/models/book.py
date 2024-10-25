@@ -53,7 +53,7 @@ class Book:
         type(self).all[self.id] = self
 
     @classmethod
-    def add_book(cls, title, author, genre_name):
+    def create(cls, title, author, genre_name):
         book = cls(title, author, genre_name)
         book.save()
         return book
