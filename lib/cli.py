@@ -16,13 +16,7 @@ def add_genre():
     except Exception as e:
         click.echo(f"Error: {str(e)}")
 
-# Add book
-def add_book():
-    title = input("Book title: ")
-    author = input("Book author: ")
-    genre_name = input("Genre name: ")
 
-    # would be nicer if I could just pick a genre, rather than remember the whole genre name
     # this is duplicative to what we're already doing in the Book model, you keep going back to genre_name which is not efficient at all.
     # once I have the genre object, double check everywhere you call Genre.find_by_name
     # in the next phase, react frontend will replace the CLI and helpers. It should do minimal fetching.
@@ -37,17 +31,32 @@ def add_book():
     # request response flow, cli and helpers are the view
     # genres = Genre.get_all()
 
-    genre = Genre.find_by_name(genre_name)
-    if genre:
-        try:
-            book = Book.create(title, author, genre_name)
-            click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre_name}'.")
-        except sqlite3.IntegrityError:
-            click.echo(f"Error: Book '{title}' already exists.")
-        except Exception as e:
-            click.echo(f"Error: {str(e)}")
-    else:
-        click.echo(f"Error: Genre '{genre_name}' not found. Please add the genre first.")
+# Add book
+def add_book():
+    title = input("Book title: ")
+    author = input("Book author: ")
+    genre_name = input("Genre name: ")
+
+    try:
+        book = Book.create(title, author, genre_name)
+        click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre_name}'.")
+    except ValueError as e:
+        click.echo(f"Error: {str(e)}")
+    except sqlite3.IntegrityError:
+        click.echo(f"Error: Book '{title}' already exists.")
+    except Exception as e:
+        click.echo(f"Error: {str(e)}")
+    # genre = Genre.find_by_name(genre_name)
+    # if genre:
+    #     try:
+    #         book = Book.create(title, author, genre_name)
+    #         click.echo(f"Book '{book.title}' by {book.author} added to genre '{genre_name}'.")
+    #     except sqlite3.IntegrityError:
+    #         click.echo(f"Error: Book '{title}' already exists.")
+    #     except Exception as e:
+    #         click.echo(f"Error: {str(e)}")
+    # else:
+    #     click.echo(f"Error: Genre '{genre_name}' not found. Please add the genre first.")
 
 # Show all genres
 def show_genres():

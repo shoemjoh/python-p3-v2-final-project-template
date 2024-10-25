@@ -73,7 +73,7 @@ class Genre:
     # will call this on capital G Genre (class method)
     # Ruby on rails is the best ORM worked with
     # don't violate the separation of responsibilities principle
-    # single source of truth - critical, "i don't like mystery, I want to call it mysterious, because it has only one place that you would have to change it"
+    # single source of truth - critical
 
     def books(self):
         from .book import Book
